@@ -36,6 +36,7 @@
     "express": "^4.16.3",
     "husky": "^0.14.3",
     "jest": "^22.4.3",
+    "jest-supertest-cookie-fix": "^1.0.0",
     "lint-staged": "^7.0.4",
     "prettier": "^1.11.1",
     "superagent": "^3.8.2",
@@ -46,6 +47,7 @@
     "clean": "rm -rf lib",
     "eslint": "eslint --fix \"{src,test}/**/*.js\"",
     "precommit": "lint-staged",
+    "prepare": "yarn run build",
     "prettier": "prettier --write \"{src,test}/**/*.js\"",
     "test": "jest",
     "test-watch": "jest --watch"

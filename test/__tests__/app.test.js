@@ -1,11 +1,15 @@
-const request = require('supertest');
+const Agent = require('jest-supertest-cookie-fix');
 
 const app = require('../app');
 const { mockUser } = require('../../src');
 
-const agent = request.agent(app);
-
 describe('Test the default mock strategy created by createMockPassport()', () => {
+    let agent;
+
+    beforeEach(() => {
+        agent = Agent(app);
+    });
+
     it('should authenticate the user', () => {
         return agent.get('/auth/mock').expect(200, { status: 'ok' });
     });
@@ -15,8 +19,8 @@ describe('Test the default mock strategy created by createMockPassport()', () =>
     });
 
     describe('Test authenticated routes', () => {
-        beforeEach(done => {
-            agent.get('/auth/mock').end(() => done());
+        beforeEach(() => {
+            return agent.get('/auth/mock');
         });
 
         it('should return the current user', () => {
