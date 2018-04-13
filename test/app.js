@@ -1,30 +1,56 @@
 const express = require('express');
 const cookieSession = require('cookie-session');
+const cookieParser = require('cookie-parser');
+const Passport = require('passport').Passport;
 
-const { createMockPassport } = require('../src');
-const app = express();
+function createApp(passport) {
+    const app = express();
 
-app.use(
-    cookieSession({ maxAge: 2592000000, keys: ['alskfhlsahrtjklal345uwrw'] })
-);
+    app.use(
+        cookieSession({
+            maxAge: 2592000000,
+            keys: ['alskfhlsahrtjklal345uwrw'],
+        })
+    );
 
-const mockPassport = createMockPassport(app);
+    app.use(cookieParser());
 
-app.get('/auth/mock', mockPassport.authenticate('mock'), (req, res) => {
-    res.send({ status: 'ok' });
-});
+    let passportInstance;
 
-app.get('/', (req, res) => {
-    res.send({ hello: 'world' });
-});
+    if (passport instanceof Passport) {
+        passportInstance = passport;
+        app.use(passportInstance.initialize());
+        app.use(passportInstance.session());
+    } else if (typeof passport === 'function') {
+        passportInstance = passport(app);
+    } else {
+        throw TypeError(
+            'Must provide either a passport instance or a function that returns a passport instance.'
+        );
+    }
 
-app.get('/current-user', (req, res) => {
-    res.send(req.user);
-});
+    app.get('/auth/mock', passportInstance.authenticate('mock'), (req, res) => {
+        res.send({ status: 'ok' });
+    });
 
-app.get('/logout', (req, res) => {
-    req.logout();
-    res.redirect('/');
-});
+    app.get('/', (req, res) => {
+        res.send({ hello: 'world' });
+    });
 
-module.exports = app;
+    app.get('/current-user', (req, res) => {
+        res.send(req.user);
+    });
+
+    app.get('/logout', (req, res) => {
+        req.logout();
+        res.redirect('/');
+    });
+
+    app.get('/cookies', (req, res) => {
+        res.send(req.cookies);
+    });
+
+    return app;
+}
+
+module.exports = createApp;

@@ -1,9 +1,10 @@
 const Agent = require('jest-supertest-cookie-fix');
 
-const app = require('../app');
-const { mockUser } = require('../../src');
+const createApp = require('../app');
+const { createMockPassport, mockUser } = require('../../src');
 
 describe('Test the default mock strategy created by createMockPassport()', () => {
+    const app = createApp(createMockPassport);
     let agent;
 
     beforeEach(() => {
@@ -25,6 +26,12 @@ describe('Test the default mock strategy created by createMockPassport()', () =>
 
         it('should return the current user', () => {
             return agent.get('/current-user').expect(200, mockUser);
+        });
+
+        it('should logout the user', () => {
+            return agent.get('/logout').then(() => {
+                agent.get('/current-user').expect(200, {});
+            });
         });
     });
 });
