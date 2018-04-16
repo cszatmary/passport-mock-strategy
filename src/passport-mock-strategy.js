@@ -10,7 +10,7 @@ export type MockStrategyOptions = {
     passReqToCallback?: true,
 };
 
-export type DoneCallback = (error: ?Error, user: User, info?: any) => void;
+export type DoneCallback = (error: ?Error, user?: User, info?: any) => void;
 
 export type VerifyFunction = (
     req?: Object,
