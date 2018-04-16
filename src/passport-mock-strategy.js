@@ -1,4 +1,22 @@
+// @flow
+
 const Strategy = require('passport').Strategy;
+
+import type { User } from './mock-user';
+
+export type MockStrategyOptions = {
+    name?: string,
+    user?: User,
+    passReqToCallback?: true,
+};
+
+export type DoneCallback = (error: ?Error, user: User, info?: any) => void;
+
+export type VerifyFunction = (
+    req?: Object,
+    user: User,
+    done: DoneCallback
+) => void;
 
 /**
  * Mock Passport Strategy for testing purposes.
@@ -35,7 +53,10 @@ class MockStrategy extends Strategy {
      *  @param {Object} options
      *  @param {Function} verify
      */
-    constructor(options, verify) {
+    constructor(
+        options?: MockStrategyOptions | VerifyFunction,
+        verify?: VerifyFunction
+    ) {
         // Allows verify to be passed as the first parameter and options skipped
         if (typeof options === 'function') {
             verify = options;
@@ -58,7 +79,7 @@ class MockStrategy extends Strategy {
      *
      * @param {Object} req
      */
-    authenticate(req) {
+    authenticate(req?: Object) {
         const self = this;
 
         // If no verify callback was specified automatically authenticate
