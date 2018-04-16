@@ -6,7 +6,8 @@ module.exports = {
     },
     "extends": [
         "eslint:recommended",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
+        "plugin:flowtype/recommended"
     ],
     "rules": {
         "indent": [
@@ -26,5 +27,8 @@ module.exports = {
             "always"
         ],
         "no-console": "off"
-    }
+    },
+    "plugins": [
+        "flowtype"
+    ]
 };
