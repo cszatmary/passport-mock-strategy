@@ -3,7 +3,7 @@ const cookieSession = require('cookie-session');
 const cookieParser = require('cookie-parser');
 const Passport = require('passport').Passport;
 
-function createApp(passport) {
+function createApp(passport, provider) {
     const app = express();
 
     app.use(
@@ -29,9 +29,13 @@ function createApp(passport) {
         );
     }
 
-    app.get('/auth/mock', passportInstance.authenticate('mock'), (req, res) => {
-        res.send({ status: 'ok' });
-    });
+    app.get(
+        '/auth/mock',
+        passportInstance.authenticate(provider),
+        (req, res) => {
+            res.send({ status: 'ok' });
+        }
+    );
 
     app.get('/', (req, res) => {
         res.send({ hello: 'world' });

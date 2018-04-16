@@ -4,7 +4,7 @@ const createApp = require('../app');
 const { createMockPassport, mockUser } = require('../../src');
 
 describe('Test the default mock strategy created by createMockPassport()', () => {
-    const app = createApp(createMockPassport);
+    const app = createApp(createMockPassport, 'mock');
     let agent;
 
     beforeEach(() => {
