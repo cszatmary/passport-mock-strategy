@@ -12,17 +12,20 @@ export type MockStrategyOptions = {
 
 export type DoneCallback = (error: ?Error, user?: User, info?: any) => void;
 
-export type VerifyFunction = (
-    req?: Object,
-    user: User,
-    done: DoneCallback
-) => void;
+export type VerifyFunction =
+    | ((req?: Object, user: User, done: DoneCallback) => void)
+    | ((user: User, done: DoneCallback) => void);
+
+export interface PassportStrategy {
+    name?: string;
+    authenticate(req?: Object): any;
+}
 
 /**
  * Mock Passport Strategy for testing purposes.
  * @extends Strategy
  */
-class MockStrategy extends Strategy {
+class MockStrategy extends Strategy implements PassportStrategy {
     /**
      * The MockStrategy constructor.
      *
