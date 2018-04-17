@@ -1,6 +1,10 @@
 // @flow
 
 const MockStrategy = require('./passport-mock-strategy');
+const {
+    setupDeserializeAndSerialize,
+    connectPassport,
+} = require('./mock-utilities');
 
 /**
  * Export MockStrategy.
@@ -14,7 +18,10 @@ exports.Strategy = MockStrategy;
  * Export other modules.
  */
 exports.mockUser = require('./mock-user');
+exports.setupDeserializeAndSerialize = setupDeserializeAndSerialize;
+exports.connectPassport = connectPassport;
 exports.createMockPassport = require('./create-mock-passport');
+exports.createMockStorage = require('./mock-storage');
 
 /**
  * Export flow types
