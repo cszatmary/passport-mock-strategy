@@ -11,18 +11,18 @@
     "email": "cs@christopherszatmary.com",
     "url": "https://christopherszatmary.com"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:cszatma/passport-mock-strategy.git"
-  },
+  "repository": "cszatma/passport-mock-strategy",
   "bugs": {
     "url": "https://github.com/cszatma/passport-mock-strategy/issues"
   },
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/index.js",
   "engines": {
     "node": ">= 6"
   },
+  "files": [
+    "lib/"
+  ],
   "dependencies": {
     "passport": "^0.4.0"
   },
