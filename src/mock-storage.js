@@ -1,0 +1,40 @@
+// @flow
+
+import type { User } from './mock-user';
+
+export type MockStorage = {
+    fetchUser: (id: string) => Promise<?User>,
+    saveUser: (user: User) => Promise<User>,
+};
+
+/**
+ * Creates and returns a mock storage object.
+ */
+function createMockStorage(): MockStorage {
+    const storage = {};
+
+    /**
+     * Fetches a user with the given id from the storage.
+     * @param {String} id - The id of the user to fetch.
+     * @returns {Promise} A promise that resolve to a user.
+     */
+    function fetchUser(id: string): Promise<?User> {
+        return new Promise(resolve => resolve(storage[id] || null));
+    }
+
+    /**
+     * Saves a user to a storage and then returns the user.
+     * @param user - The user to save to the storage.
+     * @returns {Promise<User>} A promise that resolves to a user.
+     */
+    function saveUser(user: User): Promise<User> {
+        return new Promise(resolve => {
+            storage[user.id] = Object.assign({}, user);
+            return resolve(user);
+        });
+    }
+
+    return { fetchUser, saveUser };
+}
+
+module.exports = createMockStorage;
