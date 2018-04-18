@@ -27,8 +27,16 @@ exports.createMockStorage = require('./mock-storage');
  * Export flow types
  */
 export type { User } from './mock-user';
+export type { MockStorage } from './mock-storage';
 export type {
     MockStrategyOptions,
     DoneCallback,
     VerifyFunction,
+    PassportStrategy,
 } from './passport-mock-strategy';
+export type {
+    SerializeFn,
+    DeserializeFn,
+    NodeApp,
+    PassportInstance,
+} from './mock-utilities';
