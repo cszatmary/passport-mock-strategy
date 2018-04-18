@@ -6,7 +6,7 @@ const Passport = require('passport').Passport;
 
 const MockStrategy = require('./passport-mock-strategy');
 const {
-    setupDeserializeAndSerialize,
+    setupSerializeAndDeserialize,
     connectPassport,
 } = require('./mock-utilities');
 
@@ -18,7 +18,7 @@ const {
 function createMockPassport(app: NodeApp): PassportInstance {
     const mockPassport = new Passport();
 
-    setupDeserializeAndSerialize(mockPassport);
+    setupSerializeAndDeserialize(mockPassport);
     mockPassport.use(new MockStrategy());
     connectPassport(app, mockPassport);
 

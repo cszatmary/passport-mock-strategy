@@ -3,13 +3,13 @@ const Passport = require('passport').Passport;
 
 const createApp = require('../app');
 const { MockStrategy } = require('../../src');
-const { setupDeserializeAndSerialize } = require('../../src/mock-utilities');
+const { setupSerializeAndDeserialize } = require('../../src/mock-utilities');
 const createStorage = require('../../src/mock-storage');
 
 const storage = createStorage();
 const passport = new Passport();
 
-setupDeserializeAndSerialize(passport, (id, done) =>
+setupSerializeAndDeserialize(passport, null, (id, done) =>
     storage.fetchUser(id).then(user => done(null, user))
 );
 

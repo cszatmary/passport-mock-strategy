@@ -2,7 +2,7 @@
 
 const MockStrategy = require('./passport-mock-strategy');
 const {
-    setupDeserializeAndSerialize,
+    setupSerializeAndDeserialize,
     connectPassport,
 } = require('./mock-utilities');
 
@@ -18,7 +18,7 @@ exports.Strategy = MockStrategy;
  * Export other modules.
  */
 exports.mockUser = require('./mock-user');
-exports.setupDeserializeAndSerialize = setupDeserializeAndSerialize;
+exports.setupSerializeAndDeserialize = setupSerializeAndDeserialize;
 exports.connectPassport = connectPassport;
 exports.createMockPassport = require('./create-mock-passport');
 exports.createMockStorage = require('./mock-storage');

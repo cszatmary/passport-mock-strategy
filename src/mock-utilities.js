@@ -46,13 +46,13 @@ const defaultDeserialize = (
  * @param {Function} deserializeFn A custom deserialization function, otherwise the default will be used.
  * @param {Function} serializeFn A custom serialization function, otherwise the default will be used.
  */
-function setupDeserializeAndSerialize(
+function setupSerializeAndDeserialize(
     passport: PassportInstance,
-    deserializeFn: DeserializeFn = defaultDeserialize,
-    serializeFn: SerializeFn = defaultSerialize
+    serializeFn: ?SerializeFn,
+    deserializeFn: ?DeserializeFn
 ) {
-    passport.serializeUser(serializeFn);
-    passport.deserializeUser(deserializeFn);
+    passport.serializeUser(serializeFn || defaultSerialize);
+    passport.deserializeUser(deserializeFn || defaultDeserialize);
 }
 
 /**
@@ -65,5 +65,5 @@ function connectPassport(app: NodeApp, passport: PassportInstance) {
     app.use(passport.session());
 }
 
-exports.setupDeserializeAndSerialize = setupDeserializeAndSerialize;
+exports.setupSerializeAndDeserialize = setupSerializeAndDeserialize;
 exports.connectPassport = connectPassport;
