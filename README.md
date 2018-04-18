@@ -81,6 +81,19 @@ MockStrategy always authenticates a mock user when called. This user is either t
 
 This method makes it easy to test the functionality of authenticated routes with the assumption that the user has already been authenticated.
 
+## Type Checking
+This package uses [flow](https://flow.org/) for type checking. All types used are provided and exported. They can be imported for use.
+
+Example:
+
+```javascript
+// @flow
+
+import type { MockStrategyOptions } from 'passport-mock-strategy';
+
+const options: MockStrategyOptions = { name: 'my-mock' };
+```
+
 ## Important Note
 This package is for testing purposes only! Please do not use this for actual authentication as it provides no security whatsoever!
 
