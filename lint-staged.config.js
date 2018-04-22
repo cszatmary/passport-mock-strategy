@@ -1,3 +1,3 @@
 module.exports = {
-    '*.js': ['eslint --fix', 'git add'],
+    '*.ts': ['tslint -p ./tsconfig.json --fix', 'git add'],
 };
