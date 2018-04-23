@@ -82,7 +82,9 @@ MockStrategy always authenticates a mock user when called. This user is either t
 This method makes it easy to test the functionality of authenticated routes with the assumption that the user has already been authenticated.
 
 ## Type Checking
-This package uses [flow](https://flow.org/) for type checking. All types used are provided and exported. They can be imported for use.
+This package is written in [typescript](https://www.typescriptlang.org/). All type declarations are published with the package and can be used as needed.
+
+Type definitions are also provided for [flow](https://flow.org/). They can be imported for use.
 
 Example:
 
