@@ -1,6 +1,6 @@
 {
   "name": "passport-mock-strategy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Mock passport strategy for testing Node.js applications.",
   "keywords": [
     "passport mock",
