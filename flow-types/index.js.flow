@@ -1,0 +1,92 @@
+// @flow
+
+declare module 'passport-mock-strategy' {
+    /* mock-user */
+    declare interface User {
+        id: string;
+        displayName?: string;
+        name: { familyName: string, givenName: string };
+        emails: [{ value: string, type: string }];
+        provider: string;
+    }
+
+    declare var mockUser: User;
+
+    /* mock-storage */
+    declare interface MockStorage {
+        fetchUser: (id: string) => Promise<?User>,
+        saveUser: (user: User) => Promise<User>,
+    }
+
+    declare function createMockStorage(): MockStorage;
+
+    /* passport-mock-strategy */
+    declare interface MockStrategyOptions {
+        name?: string;
+        user?: User;
+        passReqToCallback?: true;
+    }
+
+    declare type DoneCallback = (error: ?Error, user?: User, info?: any) => void;
+
+    declare type VerifyFunction =
+        | ((req: Object, user: User, done: DoneCallback) => void)
+        | ((user: User, done: DoneCallback) => void);
+
+    declare interface PassportStrategy {
+        name: string;
+        authenticate(req?: Object): any;
+    }
+
+    declare class MockStrategy implements PassportStrategy {
+        _user: User;
+        _verify: VerifyFunction;
+        _passReqToCallback: boolean;
+        name: string;
+        authenticate(req?: Object): any;
+    }
+
+    /* mock-utilities */
+    declare type SerializeFn = (
+        user: User,
+        done: (error: any, id: string) => void
+    ) => void;
+    declare type DeserializeFn = (
+        id: string,
+        done: (error: any, user?: User) => void
+    ) => void;
+
+    declare interface NodeApp {
+        use(middleware: any): NodeApp;
+    }
+
+    declare interface PassportInstance {
+        use(strategy: PassportStrategy): PassportInstance;
+        serializeUser(fn: SerializeFn): void;
+        deserializeUser(fn: DeserializeFn): void;
+        initialize(options?: any): any;
+        session(options?: any): any;
+    }
+
+    declare function setupSerializeAndDeserialize(
+        passport: PassportInstance,
+        serializeFn?: SerializeFn,
+        deserializeFn?: DeserializeFn
+    ): void;
+
+    declare function connectPassport(app: NodeApp, passport: PassportInstance): void;
+
+    /* create-mock-passport */
+    declare function createMockPassport(app: NodeApp): PassportInstance;
+
+    /* index */
+    declare module.exports: MockStrategy & {
+        Strategy: MockStrategy,
+        MockStrategy: MockStrategy,
+        mockUser: User,
+        setupSerializeAndDeserialize: setupSerializeAndDeserialize,
+        connectPassport: connectPassport,
+        createMockPassport: createMockPassport,
+        createMockStorage: createMockStorage
+    }
+}
