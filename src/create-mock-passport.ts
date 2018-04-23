@@ -1,22 +1,19 @@
-// @flow
+import { Application } from 'express';
+import * as passport from 'passport';
 
-import type { NodeApp, PassportInstance } from './mock-utilities';
-
-const Passport = require('passport').Passport;
-
-const MockStrategy = require('./passport-mock-strategy');
-const {
-    setupSerializeAndDeserialize,
+import {
     connectPassport,
-} = require('./mock-utilities');
+    setupSerializeAndDeserialize,
+} from './mock-utilities';
+import MockStrategy = require('./passport-mock-strategy');
 
 /**
  * Sets up a basic passport configuration using the default MockPassport instance.
  * @param {Object} app - The express server or any other connect style node.js server.
  * @returns {Object} mockPassport - The mock passport instance.
  */
-function createMockPassport(app: NodeApp): PassportInstance {
-    const mockPassport = new Passport();
+function createMockPassport(app: Application): passport.Authenticator {
+    const mockPassport = new passport.Passport();
 
     setupSerializeAndDeserialize(mockPassport);
     mockPassport.use(new MockStrategy());
@@ -25,4 +22,4 @@ function createMockPassport(app: NodeApp): PassportInstance {
     return mockPassport;
 }
 
-module.exports = createMockPassport;
+export = createMockPassport;

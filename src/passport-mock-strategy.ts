@@ -1,31 +1,32 @@
-// @flow
+import { Request } from 'express';
+import { Strategy } from 'passport';
 
-const Strategy = require('passport').Strategy;
+import { User } from './mock-user';
 
-import type { User } from './mock-user';
+declare namespace MockStrategy {
+    export interface MockStrategyOptions {
+        name?: string;
+        user?: User;
+        passReqToCallback?: true;
+    }
 
-export type MockStrategyOptions = {
-    name?: string,
-    user?: User,
-    passReqToCallback?: true,
-};
+    export type DoneCallback = (error: Error, user?: User, info?: any) => void;
 
-export type DoneCallback = (error: ?Error, user?: User, info?: any) => void;
+    export interface VerifyFunction {
+        (req: Request, user: User, done: DoneCallback): void;
 
-export type VerifyFunction =
-    | ((req?: Object, user: User, done: DoneCallback) => void)
-    | ((user: User, done: DoneCallback) => void);
-
-export interface PassportStrategy {
-    name?: string;
-    authenticate(req?: Object): any;
+        (user: User, done: DoneCallback): void;
+    }
 }
 
 /**
  * Mock Passport Strategy for testing purposes.
  * @extends Strategy
  */
-class MockStrategy extends Strategy implements PassportStrategy {
+class MockStrategy extends Strategy {
+    private _user: User;
+    private _verify: MockStrategy.VerifyFunction;
+    private _passReqToCallback: boolean;
     /**
      * The MockStrategy constructor.
      *
@@ -57,8 +58,8 @@ class MockStrategy extends Strategy implements PassportStrategy {
      *  @param {Function} verify
      */
     constructor(
-        options?: MockStrategyOptions | VerifyFunction,
-        verify?: VerifyFunction
+        options?: MockStrategy.MockStrategyOptions,
+        verify?: MockStrategy.VerifyFunction
     ) {
         // Allows verify to be passed as the first parameter and options skipped
         if (typeof options === 'function') {
@@ -82,36 +83,34 @@ class MockStrategy extends Strategy implements PassportStrategy {
      *
      * @param {Object} req
      */
-    authenticate(req?: Object) {
-        const self = this;
-
+    public authenticate(req?: Request) {
         // If no verify callback was specified automatically authenticate
-        if (!self._verify) {
-            return self.success(self._user, null);
+        if (!this._verify) {
+            return this.success(this._user, null);
         }
 
-        function verified(error, user, info) {
+        const verified: MockStrategy.DoneCallback = (error, user, info) => {
             if (error) {
-                return self.error(error);
+                return this.error(error);
             }
 
             if (!user) {
-                return self.fail(info);
+                return this.fail(info);
             }
 
-            self.success(user, info);
-        }
+            this.success(user, info);
+        };
 
         try {
-            if (self._passReqToCallback) {
-                self._verify(req, self._user, verified);
+            if (this._passReqToCallback) {
+                this._verify(req, this._user, verified);
             } else {
-                self._verify(this._user, verified);
+                this._verify(this._user, verified);
             }
         } catch (e) {
-            return self.error(e);
+            return this.error(e);
         }
     }
 }
 
-module.exports = MockStrategy;
+export = MockStrategy;

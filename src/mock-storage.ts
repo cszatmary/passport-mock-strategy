@@ -1,24 +1,25 @@
-// @flow
+import { Promise } from 'es6-promise';
+import { User } from './mock-user';
 
-import type { User } from './mock-user';
-
-export type MockStorage = {
-    fetchUser: (id: string) => Promise<?User>,
-    saveUser: (user: User) => Promise<User>,
-};
+declare namespace createMockStorage {
+    export interface MockStorage {
+        fetchUser: (id: string) => Promise<User>;
+        saveUser: (user: User) => Promise<User>;
+    }
+}
 
 /**
  * Creates and returns a mock storage object.
  */
-function createMockStorage(): MockStorage {
-    const storage = {};
+function createMockStorage(): createMockStorage.MockStorage {
+    const storage: { [id: string]: User } = {};
 
     /**
      * Fetches a user with the given id from the storage.
      * @param {String} id - The id of the user to fetch.
      * @returns {Promise} A promise that resolve to a user.
      */
-    function fetchUser(id: string): Promise<?User> {
+    function fetchUser(id: string): Promise<User> {
         return new Promise(resolve => resolve(storage[id] || null));
     }
 
@@ -29,7 +30,7 @@ function createMockStorage(): MockStorage {
      */
     function saveUser(user: User): Promise<User> {
         return new Promise(resolve => {
-            storage[user.id] = Object.assign({}, user);
+            storage[user.id] = { ...user };
             return resolve(user);
         });
     }
@@ -37,4 +38,4 @@ function createMockStorage(): MockStorage {
     return { fetchUser, saveUser };
 }
 
-module.exports = createMockStorage;
+export = createMockStorage;

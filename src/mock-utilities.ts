@@ -1,9 +1,8 @@
-// @flow
+import { Application } from 'express';
+import * as passportModule from 'passport';
 
-import type { User } from './mock-user';
-import type { PassportStrategy } from './passport-mock-strategy';
-
-const mockUser = require('./mock-user');
+import { User } from './mock-user';
+import mockUser = require('./mock-user');
 
 export type SerializeFn = (
     user: User,
@@ -13,18 +12,6 @@ export type DeserializeFn = (
     id: string,
     done: (error: any, user?: User) => void
 ) => void;
-
-export interface NodeApp {
-    use(middleware: any): NodeApp;
-}
-
-export interface PassportInstance {
-    use(strategy: PassportStrategy): PassportInstance;
-    serializeUser(fn: SerializeFn): void;
-    deserializeUser(fn: DeserializeFn): void;
-    initialize(options?: any): any;
-    session(options?: any): any;
-}
 
 const defaultSerialize = (user: User, done: (error: any, id: string) => void) =>
     done(null, user.id);
@@ -46,10 +33,10 @@ const defaultDeserialize = (
  * @param {Function} deserializeFn A custom deserialization function, otherwise the default will be used.
  * @param {Function} serializeFn A custom serialization function, otherwise the default will be used.
  */
-function setupSerializeAndDeserialize(
-    passport: PassportInstance,
-    serializeFn: ?SerializeFn,
-    deserializeFn: ?DeserializeFn
+export function setupSerializeAndDeserialize(
+    passport: passportModule.Authenticator,
+    serializeFn?: SerializeFn,
+    deserializeFn?: DeserializeFn
 ) {
     passport.serializeUser(serializeFn || defaultSerialize);
     passport.deserializeUser(deserializeFn || defaultDeserialize);
@@ -60,10 +47,10 @@ function setupSerializeAndDeserialize(
  * @param {Object} app A node app to connect the passport instance to.
  * @param {Passport} passport The passport instance.
  */
-function connectPassport(app: NodeApp, passport: PassportInstance) {
+export function connectPassport(
+    app: Application,
+    passport: passportModule.Authenticator
+) {
     app.use(passport.initialize());
     app.use(passport.session());
 }
-
-exports.setupSerializeAndDeserialize = setupSerializeAndDeserialize;
-exports.connectPassport = connectPassport;
