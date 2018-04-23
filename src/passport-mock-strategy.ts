@@ -14,7 +14,6 @@ declare namespace MockStrategy {
 
     export interface VerifyFunction {
         (req: Request, user: User, done: DoneCallback): void;
-
         (user: User, done: DoneCallback): void;
     }
 }
@@ -25,7 +24,7 @@ declare namespace MockStrategy {
  */
 class MockStrategy extends Strategy {
     private _user: User;
-    private _verify: MockStrategy.VerifyFunction;
+    private _verify?: MockStrategy.VerifyFunction;
     private _passReqToCallback: boolean;
     /**
      * The MockStrategy constructor.
@@ -86,7 +85,7 @@ class MockStrategy extends Strategy {
     public authenticate(req?: Request) {
         // If no verify callback was specified automatically authenticate
         if (!this._verify) {
-            return this.success(this._user, null);
+            return this.success(this._user);
         }
 
         const verified: MockStrategy.DoneCallback = (error, user, info) => {
@@ -102,7 +101,7 @@ class MockStrategy extends Strategy {
         };
 
         try {
-            if (this._passReqToCallback) {
+            if (this._passReqToCallback && req) {
                 this._verify(req, this._user, verified);
             } else {
                 this._verify(this._user, verified);

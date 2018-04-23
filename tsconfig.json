@@ -4,6 +4,7 @@
     "esModuleInterop": true,
     "target": "es5",
     "noImplicitAny": true,
+    "strict": true,
     "moduleResolution": "node",
     "sourceMap": false,
     "declaration": true,
