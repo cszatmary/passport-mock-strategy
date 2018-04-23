@@ -35,8 +35,8 @@ const defaultDeserialize = (
  */
 export function setupSerializeAndDeserialize(
     passport: passportModule.Authenticator,
-    serializeFn?: SerializeFn,
-    deserializeFn?: DeserializeFn
+    serializeFn?: SerializeFn | null,
+    deserializeFn?: DeserializeFn | null
 ) {
     passport.serializeUser(serializeFn || defaultSerialize);
     passport.deserializeUser(deserializeFn || defaultDeserialize);
