@@ -57,7 +57,7 @@
     "lint": "tslint -p ./tsconfig.json --fix",
     "precommit": "lint-staged",
     "prepare": "yarn run build",
-    "prettier": "prettier --write \"{src,test}/**/*.js\"",
+    "prettier": "prettier --write \"{src,test}/**/*.(js|ts)\"",
     "test": "jest",
     "test:watch": "jest --watch"
   }
