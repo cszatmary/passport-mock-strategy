@@ -1,4 +1,4 @@
-const Agent = require('jest-supertest-cookie-fix');
+const Agent = require('supertest').agent;
 
 const createApp = require('../app');
 const { createMockPassport, mockUser } = require('../../src');
