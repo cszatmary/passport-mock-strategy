@@ -5,26 +5,26 @@ import { User } from './mock-user';
 import mockUser = require('./mock-user');
 
 export type SerializeFn = (
-    user: User,
-    done: (error: any, id: string) => void
+  user: User,
+  done: (error: any, id: string) => void,
 ) => void;
 export type DeserializeFn = (
-    id: string,
-    done: (error: any, user?: User) => void
+  id: string,
+  done: (error: any, user?: User) => void,
 ) => void;
 
 const defaultSerialize = (user: User, done: (error: any, id: string) => void) =>
-    done(null, user.id);
+  done(null, user.id);
 
 const defaultDeserialize = (
-    id: string,
-    done: (error: any, user?: User) => void
+  id: string,
+  done: (error: any, user?: User) => void,
 ) => {
-    if (id === mockUser.id) {
-        done(null, mockUser);
-    } else {
-        done(new Error(`No such user with id ${id}`));
-    }
+  if (id === mockUser.id) {
+    done(null, mockUser);
+  } else {
+    done(new Error(`No such user with id ${id}`));
+  }
 };
 
 /**
@@ -34,12 +34,12 @@ const defaultDeserialize = (
  * @param {Function} serializeFn A custom serialization function, otherwise the default will be used.
  */
 export function setupSerializeAndDeserialize(
-    passport: passportModule.Authenticator,
-    serializeFn?: SerializeFn | null,
-    deserializeFn?: DeserializeFn | null
+  passport: passportModule.Authenticator,
+  serializeFn?: SerializeFn | null,
+  deserializeFn?: DeserializeFn | null,
 ) {
-    passport.serializeUser(serializeFn || defaultSerialize);
-    passport.deserializeUser(deserializeFn || defaultDeserialize);
+  passport.serializeUser(serializeFn || defaultSerialize);
+  passport.deserializeUser(deserializeFn || defaultDeserialize);
 }
 
 /**
@@ -48,9 +48,9 @@ export function setupSerializeAndDeserialize(
  * @param {Passport} passport The passport instance.
  */
 export function connectPassport(
-    app: Application,
-    passport: passportModule.Authenticator
+  app: Application,
+  passport: passportModule.Authenticator,
 ) {
-    app.use(passport.initialize());
-    app.use(passport.session());
+  app.use(passport.initialize());
+  app.use(passport.session());
 }

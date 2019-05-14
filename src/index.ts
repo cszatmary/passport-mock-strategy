@@ -3,8 +3,8 @@ import createMockStorage = require('./mock-storage');
 import mockUser = require('./mock-user');
 import { User } from './mock-user';
 import {
-    connectPassport,
-    setupSerializeAndDeserialize,
+  connectPassport,
+  setupSerializeAndDeserialize,
 } from './mock-utilities';
 import Strategy = require('./passport-mock-strategy');
 
@@ -12,15 +12,15 @@ import Strategy = require('./passport-mock-strategy');
  * Export MockStrategy.
  */
 declare namespace MockStrategy {
-    export type Export = typeof Strategy & {
-        MockStrategy: typeof Strategy;
-        Strategy: typeof Strategy;
-        mockUser: User;
-        setupSerializeAndDeserialize: typeof setupSerializeAndDeserialize;
-        connectPassport: typeof connectPassport;
-        createMockPassport: typeof createMockPassport;
-        createMockStorage: typeof createMockStorage;
-    };
+  export type Export = typeof Strategy & {
+    MockStrategy: typeof Strategy;
+    Strategy: typeof Strategy;
+    mockUser: User;
+    setupSerializeAndDeserialize: typeof setupSerializeAndDeserialize;
+    connectPassport: typeof connectPassport;
+    createMockPassport: typeof createMockPassport;
+    createMockStorage: typeof createMockStorage;
+  };
 }
 
 const exportModule: any = Strategy;

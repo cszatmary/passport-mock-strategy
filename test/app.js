@@ -4,57 +4,53 @@ const cookieParser = require('cookie-parser');
 const Passport = require('passport').Passport;
 
 function createApp(passport, provider) {
-    const app = express();
+  const app = express();
 
-    app.use(
-        cookieSession({
-            maxAge: 2592000000,
-            keys: ['alskfhlsahrtjklal345uwrw'],
-        })
+  app.use(
+    cookieSession({
+      maxAge: 2592000000,
+      keys: ['alskfhlsahrtjklal345uwrw'],
+    }),
+  );
+
+  app.use(cookieParser());
+
+  let passportInstance;
+
+  if (passport instanceof Passport) {
+    passportInstance = passport;
+    app.use(passportInstance.initialize());
+    app.use(passportInstance.session());
+  } else if (typeof passport === 'function') {
+    passportInstance = passport(app);
+  } else {
+    throw TypeError(
+      'Must provide either a passport instance or a function that returns a passport instance.',
     );
+  }
 
-    app.use(cookieParser());
+  app.get('/auth/mock', passportInstance.authenticate(provider), (req, res) => {
+    res.send({ status: 'ok' });
+  });
 
-    let passportInstance;
+  app.get('/', (req, res) => {
+    res.send({ hello: 'world' });
+  });
 
-    if (passport instanceof Passport) {
-        passportInstance = passport;
-        app.use(passportInstance.initialize());
-        app.use(passportInstance.session());
-    } else if (typeof passport === 'function') {
-        passportInstance = passport(app);
-    } else {
-        throw TypeError(
-            'Must provide either a passport instance or a function that returns a passport instance.'
-        );
-    }
+  app.get('/current-user', (req, res) => {
+    res.send(req.user);
+  });
 
-    app.get(
-        '/auth/mock',
-        passportInstance.authenticate(provider),
-        (req, res) => {
-            res.send({ status: 'ok' });
-        }
-    );
+  app.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+  });
 
-    app.get('/', (req, res) => {
-        res.send({ hello: 'world' });
-    });
+  app.get('/cookies', (req, res) => {
+    res.send(req.cookies);
+  });
 
-    app.get('/current-user', (req, res) => {
-        res.send(req.user);
-    });
-
-    app.get('/logout', (req, res) => {
-        req.logout();
-        res.redirect('/');
-    });
-
-    app.get('/cookies', (req, res) => {
-        res.send(req.cookies);
-    });
-
-    return app;
+  return app;
 }
 
 module.exports = createApp;
