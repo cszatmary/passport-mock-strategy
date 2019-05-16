@@ -84,9 +84,9 @@ declare module 'passport-mock-strategy' {
     Strategy: MockStrategy,
     MockStrategy: MockStrategy,
     mockUser: User,
-    setupSerializeAndDeserialize: setupSerializeAndDeserialize,
-    connectPassport: connectPassport,
-    createMockPassport: createMockPassport,
-    createMockStorage: createMockStorage
+    setupSerializeAndDeserialize: typeof setupSerializeAndDeserialize,
+    connectPassport: typeof connectPassport,
+    createMockPassport: typeof createMockPassport,
+    createMockStorage: typeof createMockStorage
   }
 }
