@@ -1,8 +1,7 @@
 import { Application } from 'express';
-import * as passportModule from 'passport';
+import passportModule from 'passport';
 
-import { User } from './mock-user';
-import mockUser = require('./mock-user');
+import mockUser, { User } from './mock-user';
 
 export type SerializeFn = (
   user: User,

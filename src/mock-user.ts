@@ -1,14 +1,12 @@
-declare namespace mockUser {
-  export interface User {
-    id: string;
-    displayName?: string;
-    name: { familyName: string; givenName: string };
-    emails: [{ value: string; type: string }];
-    provider: string;
-  }
+export interface User {
+  id: string;
+  displayName?: string;
+  name: { familyName: string; givenName: string };
+  emails: [{ value: string; type: string }];
+  provider: string;
 }
 
-const mockUser: mockUser.User = {
+const mockUser: User = {
   id: '1234',
   displayName: 'Foo Bar',
   name: { familyName: 'Bar', givenName: 'Foo' },
@@ -16,4 +14,4 @@ const mockUser: mockUser.User = {
   provider: 'mock',
 };
 
-export = mockUser;
+export default mockUser;

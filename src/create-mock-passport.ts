@@ -1,11 +1,11 @@
 import { Application } from 'express';
-import * as passport from 'passport';
+import passport from 'passport';
 
 import {
   connectPassport,
   setupSerializeAndDeserialize,
 } from './mock-utilities';
-import MockStrategy = require('./passport-mock-strategy');
+import MockStrategy from './passport-mock-strategy';
 
 /**
  * Sets up a basic passport configuration using the default MockPassport instance.
@@ -22,4 +22,4 @@ function createMockPassport(app: Application): passport.Authenticator {
   return mockPassport;
 }
 
-export = createMockPassport;
+export default createMockPassport;

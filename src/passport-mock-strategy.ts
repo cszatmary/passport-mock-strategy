@@ -1,30 +1,28 @@
 import { Request } from 'express';
 import { Strategy } from 'passport';
 
-import { User } from './mock-user';
+import mockUser, { User } from './mock-user';
 
-declare namespace MockStrategy {
-  export interface MockStrategyOptions {
-    name?: string;
-    user?: User;
-    passReqToCallback?: true;
-  }
+export interface MockStrategyOptions {
+  name?: string;
+  user?: User;
+  passReqToCallback?: true;
+}
 
-  export type DoneCallback = (error: Error, user?: User, info?: any) => void;
+export type DoneCallback = (error: Error, user?: User, info?: any) => void;
 
-  export interface VerifyFunction {
-    (req: Request, user: User, done: DoneCallback): void;
-    (user: User, done: DoneCallback): void;
-  }
+export interface VerifyFunction {
+  (req: Request, user: User, done: DoneCallback): void;
+  (user: User, done: DoneCallback): void;
 }
 
 /**
  * Mock Passport Strategy for testing purposes.
  * @extends Strategy
  */
-class MockStrategy extends Strategy {
+export default class MockStrategy extends Strategy {
   private _user: User;
-  private _verify?: MockStrategy.VerifyFunction;
+  private _verify?: VerifyFunction;
   private _passReqToCallback: boolean;
   /**
    * The MockStrategy constructor.
@@ -56,10 +54,7 @@ class MockStrategy extends Strategy {
    *  @param {Object} options
    *  @param {Function} verify
    */
-  constructor(
-    options?: MockStrategy.MockStrategyOptions,
-    verify?: MockStrategy.VerifyFunction,
-  ) {
+  constructor(options?: MockStrategyOptions, verify?: VerifyFunction) {
     // Allows verify to be passed as the first parameter and options skipped
     if (typeof options === 'function') {
       verify = options;
@@ -70,7 +65,7 @@ class MockStrategy extends Strategy {
 
     super();
     this.name = options.name || 'mock';
-    this._user = options.user || require('./mock-user');
+    this._user = options.user || mockUser;
     this._verify = verify;
     this._passReqToCallback = options.passReqToCallback || false;
   }
@@ -88,7 +83,7 @@ class MockStrategy extends Strategy {
       return this.success(this._user);
     }
 
-    const verified: MockStrategy.DoneCallback = (error, user, info) => {
+    const verified: DoneCallback = (error, user, info) => {
       if (error) {
         return this.error(error);
       }
@@ -111,5 +106,3 @@ class MockStrategy extends Strategy {
     }
   }
 }
-
-export = MockStrategy;

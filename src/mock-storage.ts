@@ -1,17 +1,15 @@
 import { Promise } from 'es6-promise';
 import { User } from './mock-user';
 
-declare namespace createMockStorage {
-  export interface MockStorage {
-    fetchUser: (id: string) => Promise<User>;
-    saveUser: (user: User) => Promise<User>;
-  }
+export interface MockStorage {
+  fetchUser: (id: string) => Promise<User>;
+  saveUser: (user: User) => Promise<User>;
 }
 
 /**
  * Creates and returns a mock storage object.
  */
-function createMockStorage(): createMockStorage.MockStorage {
+function createMockStorage(): MockStorage {
   const storage: { [id: string]: User } = {};
 
   /**
@@ -38,4 +36,4 @@ function createMockStorage(): createMockStorage.MockStorage {
   return { fetchUser, saveUser };
 }
 
-export = createMockStorage;
+export default createMockStorage;
