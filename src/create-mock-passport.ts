@@ -12,7 +12,9 @@ import MockStrategy from './passport-mock-strategy';
  * @param {Object} app - The express server or any other connect style node.js server.
  * @returns {Object} mockPassport - The mock passport instance.
  */
-function createMockPassport(app: Application): passport.Authenticator {
+export default function createMockPassport(
+  app: Application,
+): passport.Authenticator {
   const mockPassport = new passport.Passport();
 
   setupSerializeAndDeserialize(mockPassport);
@@ -21,5 +23,3 @@ function createMockPassport(app: Application): passport.Authenticator {
 
   return mockPassport;
 }
-
-export default createMockPassport;

@@ -9,7 +9,7 @@ export interface MockStorage {
 /**
  * Creates and returns a mock storage object.
  */
-function createMockStorage(): MockStorage {
+export default function createMockStorage(): MockStorage {
   const storage: { [id: string]: User } = {};
 
   /**
@@ -35,5 +35,3 @@ function createMockStorage(): MockStorage {
 
   return { fetchUser, saveUser };
 }
-
-export default createMockStorage;
