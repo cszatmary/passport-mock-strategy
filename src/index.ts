@@ -10,7 +10,7 @@ export {
   connectPassport,
   setupSerializeAndDeserialize,
 } from './mock-utilities';
-export { MockStrategy };
+export { MockStrategy, MockStrategy as Strategy };
 export default MockStrategy;
 
 /**
