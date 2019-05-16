@@ -2,11 +2,13 @@ const Agent = require('supertest').agent;
 const Passport = require('passport').Passport;
 
 const createApp = require('../app');
-const { MockStrategy } = require('../../src');
-const { setupSerializeAndDeserialize } = require('../../src/mock-utilities');
-const createStorage = require('../../src/mock-storage');
+const {
+  MockStrategy,
+  createMockStorage,
+  setupSerializeAndDeserialize,
+} = require('../../src');
 
-const storage = createStorage();
+const storage = createMockStorage();
 const passport = new Passport();
 
 setupSerializeAndDeserialize(passport, null, (id, done) =>

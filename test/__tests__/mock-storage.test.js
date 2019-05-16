@@ -1,4 +1,4 @@
-const mockStorage = require('../../src/mock-storage')();
+const mockStorage = require('../../src').createMockStorage();
 
 describe('Mock storage tests', () => {
   it('should add a user to the storage and return a promise that resolves the user', () => {
